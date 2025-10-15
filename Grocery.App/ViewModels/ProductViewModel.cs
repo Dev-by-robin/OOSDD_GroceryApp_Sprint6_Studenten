@@ -25,8 +25,15 @@ namespace Grocery.App.ViewModels
         [RelayCommand]
         public async Task ShowNewProduct()
         {
-            // Navigeren naar de nieuwe productpagina
-            await Shell.Current.GoToAsync(nameof(NewProductView));
+            if (Client.Role == Role.Admin)
+            {
+                // Navigeren naar de nieuwe productpagina
+                await Shell.Current.GoToAsync(nameof(NewProductView));
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Toegang geweigerd", "Je hebt geen toestemming om een nieuw product toe te voegen.", "OK");
+            }
         }
     }
 }
