@@ -12,7 +12,7 @@ UC19 Product in database en nieuw product aanmaken --> zelfstandig uitwerken.
 - Maak een NewProductViewModel om het aanmaken van nieuwe producten te ondersteunen. Alleen gebruikers met de admin Role mogen nieuwe producten aanmaken.  
 - Maak een NewProductView voor het invoerscherm.  
 - Voeg een ToolbarItemn toe aan de ProductView, zodat vanuit dit scherm nieuwe producten kunnen worden aangemaakt.  
-- Zorg ervoor dat als er een nieuw product is aangemaakt, deze meteen zichtbaar is in de Productlijst van de ProductView.  
+- Zorg ervoor dat als er een nieuw product is aangemaakt, deze meteen zichtbaar is in de Productlijst van de ProductView.  !!!!!!
 - Denk aan de registratie van de View, ViewModel en registreren van de route naar NewProductView.  
 
 

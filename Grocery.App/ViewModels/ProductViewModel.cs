@@ -18,8 +18,20 @@ namespace Grocery.App.ViewModels
         {
             _productService = productService;
             Products = [];
-            foreach (Product p in _productService.GetAll()) Products.Add(p);
+            LoadProducts();
             client = global.Client;
+        }
+
+        private void LoadProducts()
+        {
+            Products.Clear();
+            foreach (Product p in _productService.GetAll()) Products.Add(p);
+        }
+
+        // Deze methode wordt aangeroepen wanneer de pagina verschijnt
+        public void OnAppearing()
+        {
+            LoadProducts();
         }
 
         [RelayCommand]
