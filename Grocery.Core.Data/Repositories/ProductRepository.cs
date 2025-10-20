@@ -108,7 +108,7 @@ namespace Grocery.Core.Data.Repositories
                 if (rowsAffected == 0)
                 {
                     CloseConnection();
-                    return null; // No rows deleted, item not found
+                    return null;
                 }
             }
             CloseConnection();
@@ -132,7 +132,7 @@ namespace Grocery.Core.Data.Repositories
                 if (rowsAffected == 0)
                 {
                     CloseConnection();
-                    return null; // Geen rijen bijgewerkt
+                    return null;
                 }
             }
             CloseConnection();
