@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Grocery.App.ViewModels"
+             x:Class="Grocery.App.Views.NewProductView"
+             x:DataType="vm:NewProductViewModel"
+             Title="Nieuw Product">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Titel -->
+            <Label 
+                Text="Nieuw Product Aanmaken"
+                FontSize="24"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                Margin="0,0,0,20"/>
+
+            <!-- Naam -->
+            <Label Text="Productnaam *" FontAttributes="Bold"/>
+            <Entry 
+                Placeholder="Bijv. Melk, Brood, etc."
+                Text="{Binding Name}"/>
+
+            <!-- Voorraad -->
+            <Label Text="Voorraad *" FontAttributes="Bold"/>
+            <Entry 
+                Placeholder="0"
+                Keyboard="Numeric"
+                Text="{Binding Stock}"/>
+
+            <!-- Houdbaarheidsdatum -->
+            <Label Text="Houdbaarheidsdatum *" FontAttributes="Bold"/>
+            <DatePicker 
+                Date="{Binding ShelfLifeDateTime}"
+                MinimumDate="{Binding MinimumDate}"/>
+
+            <!-- Prijs -->
+            <Label Text="Prijs (€) *" FontAttributes="Bold"/>
+            <Entry 
+                Placeholder="0.00"
+                Keyboard="Numeric"
+                Text="{Binding Price}"/>
+
+            <!-- Knoppen -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,20,0,0">
+                <Button 
+                    Text="Opslaan"
+                    Command="{Binding SaveCommand}"
+                    BackgroundColor="#00AA00"
+                    TextColor="White"
+                    Grid.Column="0"/>
+
+                <Button 
+                    Text="Annuleren"
+                    Command="{Binding CancelCommand}"
+                    BackgroundColor="#AA0000"
+                    TextColor="White"
+                    Grid.Column="1"/>
+            </Grid>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -8,9 +8,12 @@ namespace Grocery.Core.Data.Repositories
     public class GroceryListItemsRepository : DatabaseConnection, IGroceryListItemsRepository
     {
         private readonly List<GroceryListItem> groceryListItems = [];
+        private readonly IProductRepository _productRepository;
 
-        public GroceryListItemsRepository()
+        public GroceryListItemsRepository(IProductRepository productRepository)
         {
+            _productRepository = productRepository;
+
             // Foreign keys uit zodat tabel aangemaakt kan worden zonder dat andere tabellen al bestaan
             OpenConnection();
             using (SqliteCommand command = new("PRAGMA foreign_keys = OFF;", Connection))
@@ -27,12 +30,28 @@ namespace Grocery.Core.Data.Repositories
                             FOREIGN KEY(GroceryListId) REFERENCES GroceryList(Id),
                             UNIQUE(GroceryListId, ProductId))");
 
-            List<string> insertQueries = [@"INSERT OR IGNORE INTO GroceryListItem(GroceryListId, ProductId, Amount) VALUES(1, 1, 3)",
-                                          @"INSERT OR IGNORE INTO GroceryListItem(GroceryListId, ProductId, Amount) VALUES(1, 2, 1)",
-                                          @"INSERT OR IGNORE INTO GroceryListItem(GroceryListId, ProductId, Amount) VALUES(1, 3, 4)",
-                                          @"INSERT OR IGNORE INTO GroceryListItem(GroceryListId, ProductId, Amount) VALUES(2, 1, 2)",
-                                          @"INSERT OR IGNORE INTO GroceryListItem(GroceryListId, ProductId, Amount) VALUES(2, 2, 5)"];
-            InsertMultipleWithTransaction(insertQueries);
+            // Haal producten op uit ProductRepository
+            List<Product> allProducts = _productRepository.GetAll();
+
+            var melk = allProducts.FirstOrDefault(p => p.Name == "Melk");
+            var kaas = allProducts.FirstOrDefault(p => p.Name == "Kaas");
+            var brood = allProducts.FirstOrDefault(p => p.Name == "Brood");
+
+            if (melk != null && kaas != null && brood != null)
+            {
+                List<string> insertQueries = [
+                    $"INSERT OR IGNORE INTO GroceryListItem(GroceryListId, ProductId, Amount) VALUES(1, {melk.Id}, 3)",
+                    $"INSERT OR IGNORE INTO GroceryListItem(GroceryListId, ProductId, Amount) VALUES(1, {kaas.Id}, 1)",
+                    $"INSERT OR IGNORE INTO GroceryListItem(GroceryListId, ProductId, Amount) VALUES(1, {brood.Id}, 4)",
+                    $"INSERT OR IGNORE INTO GroceryListItem(GroceryListId, ProductId, Amount) VALUES(2, {melk.Id}, 2)",
+                    $"INSERT OR IGNORE INTO GroceryListItem(GroceryListId, ProductId, Amount) VALUES(2, {kaas.Id}, 5)"];
+
+                InsertMultipleWithTransaction(insertQueries);
+            } 
+            else
+            {
+                Console.WriteLine("(Melk, Kaas of Brood) ontbreekt in de Product tabel.");
+            }
             //GetAll();
         }
 

@@ -11,6 +11,13 @@ namespace Grocery.Core.Data.Repositories
 
         public GroceryListRepository()
         {
+            // Foreign keys uit zodat tabel aangemaakt kan worden zonder dat andere tabellen al bestaan
+            OpenConnection();
+            using (SqliteCommand command = new("PRAGMA foreign_keys = OFF;", Connection))
+            {
+                command.ExecuteNonQuery();
+            }
+            CloseConnection();
             //ISO 8601 format: date.ToString("o", CultureInfo.InvariantCulture)
             CreateTable(@"CREATE TABLE IF NOT EXISTS GroceryList (
                             [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
