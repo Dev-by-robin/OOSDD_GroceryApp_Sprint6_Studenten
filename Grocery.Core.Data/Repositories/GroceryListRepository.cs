@@ -11,6 +11,13 @@ namespace Grocery.Core.Data.Repositories
 
         public GroceryListRepository()
         {
+            // Foreign keys uit zodat tabel aangemaakt kan worden zonder dat andere tabellen al bestaan
+            OpenConnection();
+            using (SqliteCommand command = new("PRAGMA foreign_keys = OFF;", Connection))
+            {
+                command.ExecuteNonQuery();
+            }
+            CloseConnection();
             //ISO 8601 format: date.ToString("o", CultureInfo.InvariantCulture)
             CreateTable(@"CREATE TABLE IF NOT EXISTS GroceryList (
                             [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -19,7 +26,7 @@ namespace Grocery.Core.Data.Repositories
                             [Color] NVARCHAR(12) NOT NULL,
                             [ClientId] INTEGER NOT NULL)");
             List<string> insertQueries = [@"INSERT OR IGNORE INTO GroceryList(Name, Date, Color, ClientId) VALUES('Boodschappen familieweekend', '2024-12-14', '#FF6A00', 1)",
-                                          @"INSERT OR IGNORE INTO GroceryList(Name, Date, Color, ClientId) VALUES('Kerstboodschappen', '2024-12-07', '#626262', 1)",
+                                          @"INSERT OR IGNORE INTO GroceryList(Name, Date, Color, ClientId) VALUES('TEST BOODSCHAPPEN', '2024-12-07', '#626262', 1)",
                                           @"INSERT OR IGNORE INTO GroceryList(Name, Date, Color, ClientId) VALUES('Weekend boodschappen', '2024-11-30', '#003300', 1)"];
             InsertMultipleWithTransaction(insertQueries);
             GetAll();
